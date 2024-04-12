@@ -21,12 +21,13 @@ public class MybatisMemberRepository implements MemberRepository {
     @Override
     public Member save(Member member) {
         memberMapper.save(member);
+        Optional<Member> savedMember = memberMapper.findByName(member.getName());
 
-        return member;
+        return savedMember.get();
     }
 
     @Override
-    public Optional<Member> findbyId(Long id) {
+    public Optional<Member> findById(Long id) {
         return memberMapper.findById(id);
     }
 

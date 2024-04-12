@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="/js/test.js" defer></script>
+</head>
+<body>
+<div class="container">
+    <div>
+        <form action="/members/memberFind" method="post">
+        <h1>회원 조회</h1>
+        <p>조회할 회원을 입력하세요.</p>
+        <div class="form-group">
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" placeholder="이름을 입력하세요">
+            <button type="submit" >조회</button>
+        </div>
+        </form>
+        <form action="/" method="post">
+            <button type="submit">홈</button>
+        </form>
+    </div>
+</div> <!------- / container ---->
+</body>
+</html>

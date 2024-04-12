@@ -4,24 +4,27 @@
 <mapper namespace="hello.hellospring.repository.MemberMapper">
 
 
-    <insert id="save" useGeneratedKeys="true" keyProperty="id" >
-        INSERT INTO member (id, name)
-        values (#{Id}, #{name})
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO member (name, age)
+        values (#{name}, #{age})
+        <selectKey keyColumn="id" resultType="Member">
+            SELECT ID FROM MEMBER WHERE ID= #{id}
+        </selectKey>
     </insert>
-
     <select id="findById" resultType="Member">
-        SELECT id, name
+        SELECT id, name, age
         FROM member
         where id = #{id}
     </select>
     <select id="findByName" resultType="Member">
-        SELECT id, name
+        SELECT id, name, age
         FROM member
         where name = #{name}
     </select>
     <update id="updateMember">
         UPDATE member
         SET name=#{updateParam.name},
+            age=#{updateParam.age}
         WHERE id=#{id}
     </update>
     <delete id="deleteMember">
@@ -29,7 +32,7 @@
         WHERE id=#{memberId}
     </delete>
     <select id="findAll" resultType="Member">
-        select id, name
+        select id, name, age
         from member
     </select>
 </mapper>

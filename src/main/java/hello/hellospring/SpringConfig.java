@@ -11,18 +11,28 @@ import javax.sql.DataSource;
 @Configuration
 public class SpringConfig {
 
-    private DataSource dataSource;
+//    private DataSource dataSource;
+//
+//    @Autowired
+//    public SpringConfig(DataSource dataSource) {
+//        this.dataSource = dataSource;
+//    }
 
-    @Autowired
-    public SpringConfig(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    //private final MemberMapper memberMapper;
-
-    //public SpringConfig(MemberMapper memberMapper) {
+      // H2 mapper
+//    private final MemberMapper memberMapper;
+//
+//    @Autowired
+//    public SpringConfig(MemberMapper memberMapper) {
 //        this.memberMapper = memberMapper;
 //    }
+
+    // mssql mapper
+    private final MssqlMemberMapper memberMapper;
+
+    @Autowired
+    public SpringConfig(MssqlMemberMapper memberMapper) {
+        this.memberMapper = memberMapper;
+    }
 
 
     @Bean
@@ -32,7 +42,7 @@ public class SpringConfig {
 
     @Bean
     public MemberRepository memberRepository() {
-        return new JdbcMemberRepository(dataSource);
-        //return new MybatisMemberRepository(memberMapper);
+//        return new JdbcMemberRepository(dataSource);
+        return new MybatisMssqlMemberRepository(memberMapper);
     }
 }

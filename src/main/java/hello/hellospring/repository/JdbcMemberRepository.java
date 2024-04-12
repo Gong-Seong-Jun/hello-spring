@@ -25,7 +25,7 @@ public class JdbcMemberRepository implements MemberRepository{
             e.printStackTrace();
         }
         try {
-            if (conn != null){
+            if (pstmt != null){
                 pstmt.close();
             }
         } catch (SQLException e) {
@@ -39,6 +39,7 @@ public class JdbcMemberRepository implements MemberRepository{
             e.printStackTrace();
         }
     }
+
     private final DataSource dataSource;
 
     public JdbcMemberRepository(DataSource dataSource) {
@@ -63,7 +64,7 @@ public class JdbcMemberRepository implements MemberRepository{
             rs = pstmt.getGeneratedKeys();
 
             if (rs.next()) {
-                member.setId(rs.getLong(1));
+                member.setUserId(rs.getLong(1));
 
             } else {
                 throw new SQLException("id 조회 실패");
@@ -78,7 +79,7 @@ public class JdbcMemberRepository implements MemberRepository{
     }
 
     @Override
-    public Optional<Member> findbyId(Long id) {
+    public Optional<Member> findById(Long id) {
         String sql = "select * from member where id = ?";
 
         Connection conn = null;
@@ -94,7 +95,7 @@ public class JdbcMemberRepository implements MemberRepository{
 
             if (rs.next()) {
                 Member member = new Member();
-                member.setId(rs.getLong("id"));
+                member.setUserId(rs.getLong("id"));
                 member.setName(rs.getString("name"));
                 return Optional.of(member);
             } else {
@@ -126,7 +127,7 @@ public class JdbcMemberRepository implements MemberRepository{
             List<Member> members = new ArrayList<>();
             while (rs.next()) {
                 Member member = new Member();
-                member.setId(rs.getLong("id"));
+                member.setUserId(rs.getLong("id"));
                 member.setName(rs.getString("name"));
                 members.add(member);
             }
@@ -158,7 +159,7 @@ public class JdbcMemberRepository implements MemberRepository{
 
             if(rs.next()) {
                 Member member = new Member();
-                member.setId(rs.getLong("id"));
+                member.setUserId(rs.getLong("id"));
                 member.setName(rs.getString("name"));
                 return Optional.of(member);
             }
@@ -182,6 +183,34 @@ public class JdbcMemberRepository implements MemberRepository{
 
     @Override
     public void deleteMember(Long memberId) {
+        String sql = "delete from member where id = ?";
 
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, memberId);
+
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            try {
+                if (pstmt != null){
+                    pstmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (conn != null){
+                    close(conn);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

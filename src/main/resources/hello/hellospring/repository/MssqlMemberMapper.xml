@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hello.hellospring.repository.MssqlMemberMapper">
+
+    <update id="updateMember" statementType="CALLABLE" parameterType="map">
+        {CALL P_UPDATE_MEMBER_JSON
+        (#{@pv_json_i, mode=IN ,   jdbcType=VARCHAR},
+         #{@pv_json_o, mode=OUT,   jdbcType=VARCHAR},
+         #{@pv_retcod_o, mode=OUT,   jdbcType=INTEGER},
+         #{@pv_retmsg_o, mode=OUT,   jdbcType=VARCHAR})
+        }
+    </update>
+<!--    <update id="updateMember">-->
+<!--        UPDATE member-->
+<!--        SET name=#{updateParam.name},-->
+<!--        age=#{updateParam.age}-->
+<!--        WHERE id=#{id}-->
+<!--    </update>-->
+
+    <insert id="saveMember" statementType="CALLABLE" parameterType="map">
+        {CALL P_INSERT_MEMBER_JSON(
+        #{@pv_json_i,   mode=IN,    jdbcType=VARCHAR},
+        #{@pv_json_o,   mode=OUT,   jdbcType=VARCHAR},
+        #{@pv_retcod_o, mode=OUT,   jdbcType=INTEGER},
+        #{@pv_retmsg_o, mode=OUT,   jdbcType=VARCHAR})
+        }
+    </insert>
+
+<!--    <insert id="save" useGeneratedKeys="true" keyProperty="id">-->
+<!--        INSERT INTO member (userid, password, name, age)-->
+<!--        values (#{userid}, #{password}, #{name}, #{age})-->
+<!--    </insert>-->
+
+    <delete id="deleteMember" statementType="CALLABLE" parameterType="map">
+        {CALL P_DELETE_MEMBER_JSON(
+        #{@pv_json_i, mode=IN ,   jdbcType=VARCHAR},
+        #{@pv_json_o, mode=OUT,   jdbcType=VARCHAR},
+        #{@pv_retcod_o, mode=OUT,   jdbcType=INTEGER},
+        #{@pv_retmsg_o, mode=OUT,   jdbcType=VARCHAR})}
+    </delete>
+
+<!--    <delete id="deleteMember">-->
+<!--        DELETE FROM member-->
+<!--        WHERE id=#{memberId}-->
+<!--    </delete>-->
+
+    <select id="findById" resultType="Member">
+        SELECT userid,password, name, age
+        FROM member
+        where userid = #{userid}
+    </select>
+
+    <select id="findByName" resultType="Member">
+        SELECT userid,password, name, age
+        FROM member
+        where name = #{name}
+    </select>
+
+    <select id="findAll" resultType="Member">
+        SELECT userid,password, name, age
+        FROM member
+        where userid is not null
+    </select>
+</mapper>

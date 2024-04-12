@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="text/javascript" src="js/test.js"></script>
+</head>
+<body>
+<div class="container">
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>비밀번호</th>
+                    <th>이름</th>
+                    <th>나이</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="member : ${memberOne}">
+                    <form th:action="@{/members/memberUpdate/{id}(id=${member.getUserid()})}" th:method="post">
+                        <td th:text="${member.getUserid()}"></td>
+                        <td>
+                            <input type="text" id="password" name="password" placeholder="비밀번호를 입력하세요.">
+                        </td>
+                        <td>
+                            <input type="text" id="name" name="name" placeholder="이름을 입력하세요.">
+                        </td>
+                        <td>
+                            <input type="text" id="age" name="age" placeholder="나이를 입력하세요.">
+                        </td>
+                        <td>
+                            <input type="hidden" th:id="${member.getUserid()}" th:value="${member.getUserid()}">
+                            <button type="submit">수정</button>
+                        </td>
+                    </form>
+                </tr>
+            </tbody>
+        </table>
+    <div>
+
+
+    </div>
+    </div> <!------- / container ---->
+</div>
+</body>
+</html>
